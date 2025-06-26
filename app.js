@@ -1,17 +1,4 @@
-const { execSync } = require('child_process');
-
-console.log('🔧 Forçando instalação do Chromium...');
-try {
-  // Força download do Chromium
-  execSync('npx @puppeteer/browsers install chrome@stable', { 
-    stdio: 'inherit',
-    timeout: 300000 
-  });
-  console.log('✅ Chromium instalado com sucesso!');
-} catch (error) {
-  console.log('⚠️ Erro na instalação:', error.message);
-}
-// ... resto do código
+const chromium = require('chrome-aws-lambda');
 const express = require('express');
 const app = express();
 const puppeteer = require('puppeteer');
@@ -190,23 +177,12 @@ app.post('/enviar', async (req, res) => {
   try {
     console.log('🚀 Iniciando processo de cadastro...');
     
-    const browser = await puppeteer.launch({
-      headless: 'new',
-      executablePath: process.env.GOOGLE_CHROME_BIN || 
-        process.env.CHROME_BIN || 
-        '/usr/bin/google-chrome',
-      args: [
-        '--no-sandbox',
-        '--disable-setuid-sandbox',
-        '--disable-dev-shm-usage',
-        '--disable-gpu',
-        '--no-first-run',
-        '--no-zygote',
-        '--single-process',
-        '--disable-background-timer-throttling',
-        '--disable-backgrounding-occluded-windows',
-        '--disable-renderer-backgrounding'
-      ]
+    const browser = await chromium.puppeteer.launch({
+      args: chromium.args,
+      defaultViewport: chromium.defaultViewport,
+      executablePath: await chromium.executablePath,
+      headless: chromium.headless,
+      ignoreHTTPSErrors: true,
     });
 
     const page = await browser.newPage();
@@ -996,21 +972,6 @@ async function enviarParaMBM(dados) {
 
   try {
     console.log('🚀 Iniciando processo de cadastro via Pipefy...');
-    
-    browser = await puppeteer.launch({
-      headless: 'new',
-      args: [
-        '--no-sandbox',
-        '--disable-setuid-sandbox',
-        '--disable-dev-shm-usage',
-        '--disable-accelerated-2d-canvas',
-        '--no-first-run',
-        '--no-zygote',
-        '--disable-gpu'
-      ],
-      timeout: 0,
-      ignoreHTTPSErrors: true
-    });
 
     const page = await browser.newPage();
     
