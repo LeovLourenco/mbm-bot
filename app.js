@@ -776,14 +776,6 @@ app.post('/enviar', async (req, res) => {
   }
 });
 
-// Endpoint para testar se o servidor está funcionando
-app.get('/status', (req, res) => {
-  res.json({ 
-    status: 'online', 
-    timestamp: new Date().toISOString(),
-    message: 'Bot de cadastro de corretor ativo'
-  });
-});
 // Novo endpoint específico para receber dados do Pipefy
 app.post('/pipefy', async (req, res) => {
   console.log('🔌 Dados recebidos do Pipefy:', JSON.stringify(req.body, null, 2));
@@ -829,8 +821,8 @@ app.post('/pipefy', async (req, res) => {
       parentesco: 'Não',
       parentesco_sim: '',
       comochegou: 'Formulário online Pipefy',
-      nome_plataforma: '',
-      cnpj_plataforma: '',
+      nome_plataforma: 'INOVA REPRESENTAÇÃO E GESTÃO',
+      cnpj_plataforma: '34.476.027/0001-77',
       receber_mkt: false,
       
       // Arquivos (vamos baixar do Pipefy)
