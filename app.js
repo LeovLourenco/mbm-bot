@@ -873,8 +873,6 @@ app.post('/pipefy', async (req, res) => {
   }
 });
 
-const https = require('https');
-const http = require('http');
 
 // Função para baixar arquivo de uma URL
 async function baixarArquivo(url, caminhoDestino) {
