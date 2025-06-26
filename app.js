@@ -972,13 +972,17 @@ async function enviarParaMBM(dados) {
 
   try {
     console.log('🚀 Iniciando processo de cadastro via Pipefy...');
-
-    const page = await browser.newPage();
     
-    // Configurações da página
-    await page.setViewport({ width: 1366, height: 768 });
-    await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36');
+    // ✅ ADICIONE ESTA INICIALIZAÇÃO:
+    browser = await chromium.puppeteer.launch({
+      args: chromium.args,
+      defaultViewport: chromium.defaultViewport,
+      executablePath: await chromium.executablePath,
+      headless: chromium.headless,
+      ignoreHTTPSErrors: true,
+    });
 
+    const page = await browser.newPage(); // ✅ Agora vai funcionar!
     console.log('📄 Acessando formulário...');
     await page.goto('https://mbmseguros.com.br/novo-corretor/', {
       waitUntil: 'networkidle2',
