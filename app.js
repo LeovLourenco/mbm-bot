@@ -190,19 +190,23 @@ app.post('/enviar', async (req, res) => {
   try {
     console.log('🚀 Iniciando processo de cadastro...');
     
-    browser = await puppeteer.launch({
+    const browser = await puppeteer.launch({
       headless: 'new',
+      executablePath: process.env.GOOGLE_CHROME_BIN || 
+        process.env.CHROME_BIN || 
+        '/usr/bin/google-chrome',
       args: [
         '--no-sandbox',
         '--disable-setuid-sandbox',
         '--disable-dev-shm-usage',
-        '--disable-accelerated-2d-canvas',
+        '--disable-gpu',
         '--no-first-run',
         '--no-zygote',
-        '--disable-gpu'
-      ],
-      timeout: 0,
-      ignoreHTTPSErrors: true
+        '--single-process',
+        '--disable-background-timer-throttling',
+        '--disable-backgrounding-occluded-windows',
+        '--disable-renderer-backgrounding'
+      ]
     });
 
     const page = await browser.newPage();
