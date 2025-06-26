@@ -2,6 +2,7 @@
   "name": "mbm-bot",
   "version": "1.0.0",
   "scripts": {
+    "build": "npx puppeteer browsers install chrome",
     "start": "node app.js"
   },
   "dependencies": {
