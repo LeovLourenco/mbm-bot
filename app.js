@@ -12,7 +12,7 @@ try {
   console.log('⚠️ Erro na instalação:', error.message);
 }
 
-const express = require('express');
+//const express = require('express');
 const puppeteer = require('puppeteer');
 // ... resto do código
 const express = require('express');
