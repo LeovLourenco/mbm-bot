@@ -1,0 +1,73 @@
+{
+  "exemplo_requisicao_completa": {
+    "ja_contatado_mbm": "Sim",
+    "nome_contatou_mbm": "João Silva",
+    "razaosocial": "Corretora de Seguros ABC Ltda",
+    "cnpj_form": "12.345.678/0001-90",
+    "susep_form": "123456789",
+    "simples_nacional": "Sim",
+    "issqn": "1234567890",
+    "endereco": "Rua das Flores",
+    "endereco_numero": "123",
+    "endereco_complemento": "Sala 456",
+    "bairro": "Centro",
+    "cidade": "Porto Alegre",
+    "uf": "RS",
+    "cep_form": "90000-000",
+    "fixo": "(51) 3333-4444",
+    "celular": "(51) 99999-8888",
+    "email_contato": "contato@corretorabc.com.br",
+    "email_faturamento": "faturamento@corretorabc.com.br",
+    "email_financeiro": "financeiro@corretorabc.com.br",
+    "parentesco": "Não possui",
+    "parentesco_sim": "",
+    "nome_assinatura_plataforma": "Maria da Silva",
+    "cpf_plataforma": "123.456.789-00",
+    "data_nascimento": "01/01/1980",
+    "email_responsavel": "maria@corretorabc.com.br",
+    "comochegou": "Indicação de um parceiro comercial",
+    "nome_plataforma": "Plataforma XYZ",
+    "cnpj_plataforma": "98.765.432/0001-10",
+    "receber_mkt": true,
+    "cnpj_arquivo": "cnpj.pdf",
+    "social": "contrato_social.pdf",
+    "alvara": "alvara_funcionamento.pdf",
+    "iss": "inscricao_municipal.pdf",
+    "susep": "registro_susep.pdf",
+    "rg": "rg_socios.pdf",
+    "cpf_arquivo": "cpf_socios.pdf",
+    "conta": "comprovante_conta.pdf"
+  },
+  
+  "exemplo_requisicao_minima": {
+    "razaosocial": "Corretora Simples Ltda",
+    "cnpj_form": "11.222.333/0001-44",
+    "susep_form": "987654321",
+    "email_contato": "contato@corretorasimples.com.br",
+    "nome_assinatura_plataforma": "José Santos",
+    "cpf_plataforma": "987.654.321-00",
+    "data_nascimento": "15/05/1975",
+    "email_responsavel": "jose@corretorasimples.com.br",
+    "comochegou": "Site da MBM"
+  },
+  
+  "comandos_curl_exemplo": {
+    "comando_completo": "curl -X POST http://localhost:3000/enviar -H \"Content-Type: application/json\" -d '{\"razaosocial\": \"Corretora Teste\", \"cnpj_form\": \"12.345.678/0001-90\", \"email_contato\": \"teste@teste.com\"}'",
+    "comando_status": "curl http://localhost:3000/status"
+  },
+  
+  "estrutura_arquivos_necessaria": {
+    "pasta_documentos": "./documentos/",
+    "arquivos_padrao": [
+      "cnpj.pdf",
+      "social.pdf", 
+      "alvara.pdf",
+      "iss.pdf",
+      "susep.pdf",
+      "rg.pdf",
+      "cpf.pdf",
+      "conta.pdf"
+    ],
+    "formatos_aceitos": [".pdf", ".png", ".jpg", ".jpeg", ".doc", ".docx"]
+  }
+}
