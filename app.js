@@ -1,3 +1,20 @@
+const { execSync } = require('child_process');
+
+console.log('🔧 Forçando instalação do Chromium...');
+try {
+  // Força download do Chromium
+  execSync('npx @puppeteer/browsers install chrome@stable', { 
+    stdio: 'inherit',
+    timeout: 300000 
+  });
+  console.log('✅ Chromium instalado com sucesso!');
+} catch (error) {
+  console.log('⚠️ Erro na instalação:', error.message);
+}
+
+const express = require('express');
+const puppeteer = require('puppeteer');
+// ... resto do código
 const express = require('express');
 const app = express();
 const puppeteer = require('puppeteer');
