@@ -6,6 +6,10 @@ const fs = require('fs');
 const https = require('https');
 const http = require('http');
 
+console.log('🟢 Express carregado');
+console.log('🟢 Puppeteer carregado');
+console.log('🟢 Iniciando configuração das rotas...');
+
 app.use(express.json());
 
 // ✅ ADICIONE ESTAS 3 ROTAS AQUI:
@@ -1332,7 +1336,7 @@ const PORT = process.env.PORT || 3000;
 console.log('🔍 DEBUG - process.env.PORT:', process.env.PORT);
 console.log('🔍 DEBUG - PORT final:', PORT);
 console.log('🔍 DEBUG - typeof PORT:', typeof PORT);
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`🚀 Servidor rodando na porta ${PORT}`);
   console.log(`📋 Endpoints disponíveis:`);
   console.log(`   POST /enviar - Enviar cadastro de corretor`);
