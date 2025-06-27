@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const puppeteer = require('puppeteer');
+const puppeteer = require('puppeteer-core');
 const path = require('path');
 const fs = require('fs');
 const https = require('https');
