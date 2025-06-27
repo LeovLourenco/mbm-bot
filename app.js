@@ -1,3 +1,11 @@
+process.on('uncaughtException', (err) => {
+  console.error('❌ Uncaught Exception:', err);
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('❌ Unhandled Rejection:', reason);
+});
+
 const express = require('express');
 const app = express();
 
@@ -117,4 +125,8 @@ process.on('SIGINT', () => {
     console.log('✅ Servidor fechado');
     process.exit(0);
   });
+  setInterval(() => {
+  console.log('🟢 App ainda rodando em', new Date().toISOString());
+}, 10000);
+
 });
