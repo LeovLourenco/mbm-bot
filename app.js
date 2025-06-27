@@ -176,9 +176,24 @@ app.post('/enviar', async (req, res) => {
   try {
     console.log('🚀 Iniciando processo de cadastro...');
     
+    // ✅ Configuração otimizada para Railway
     const browser = await puppeteer.launch({
       headless: true,
-      args: ['--no-sandbox', '--disable-setuid-sandbox'],
+      executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || '/usr/bin/google-chrome-stable',
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage',
+        '--disable-accelerated-2d-canvas',
+        '--no-first-run',
+        '--no-zygote',
+        '--disable-gpu',
+        '--memory-pressure-off',
+        '--max_old_space_size=4096',
+        '--disable-background-timer-throttling',
+        '--disable-backgrounding-occluded-windows',
+        '--disable-renderer-backgrounding'
+      ],
       ignoreHTTPSErrors: true,
     });
 
@@ -971,64 +986,10 @@ async function enviarParaMBM(dados) {
   try {
     console.log('🚀 Iniciando processo de cadastro via Pipefy...');
     
-    // ✅ CORREÇÃO: Descobrir automaticamente o caminho do Chrome
-    const fs = require('fs');
-    const path = require('path');
-    
-    // Função para encontrar o executável do Chrome
-    function findChrome() {
-      const possiblePaths = [
-        '/opt/render/.cache/puppeteer/chrome/linux-137.0.7151.119/chrome-linux64/chrome',
-        '/opt/render/.cache/puppeteer/chrome/linux-137.0.7151.119/chrome',
-        '/opt/render/.cache/puppeteer/chrome/linux-137.0.7151.119/chrome-linux/chrome',
-        '/opt/render/.cache/puppeteer/chrome-headless-shell/linux-137.0.7151.119/chrome-headless-shell',
-        process.env.PUPPETEER_EXECUTABLE_PATH
-      ].filter(Boolean);
-      
-      console.log('🔍 Procurando Chrome nos caminhos:', possiblePaths);
-      
-      for (const chromePath of possiblePaths) {
-        if (fs.existsSync(chromePath)) {
-          console.log(`✅ Chrome encontrado em: ${chromePath}`);
-          return chromePath;
-        } else {
-          console.log(`❌ Chrome não encontrado em: ${chromePath}`);
-        }
-      }
-      
-      // Se não encontrar, listar o que há na pasta
-      const baseDir = '/opt/render/.cache/puppeteer';
-      if (fs.existsSync(baseDir)) {
-        console.log('📁 Conteúdo da pasta puppeteer:');
-        const items = fs.readdirSync(baseDir, { withFileTypes: true });
-        items.forEach(item => {
-          console.log(`  ${item.isDirectory() ? '📁' : '📄'} ${item.name}`);
-          if (item.isDirectory()) {
-            const subDir = path.join(baseDir, item.name);
-            try {
-              const subItems = fs.readdirSync(subDir);
-              subItems.forEach(subItem => {
-                console.log(`    📄 ${subItem}`);
-              });
-            } catch (e) {
-              console.log(`    ❌ Erro ao ler: ${e.message}`);
-            }
-          }
-        });
-      }
-      
-      return null;
-    }
-    
-    const chromePath = findChrome();
-    
-    if (!chromePath) {
-      throw new Error('Chrome não encontrado em nenhum dos caminhos possíveis');
-    }
-    
+    // ✅ Configuração otimizada para Railway
     browser = await puppeteer.launch({
       headless: true,
-      executablePath: chromePath,
+      executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || '/usr/bin/google-chrome-stable',
       args: [
         '--no-sandbox',
         '--disable-setuid-sandbox',
@@ -1036,12 +997,21 @@ async function enviarParaMBM(dados) {
         '--disable-accelerated-2d-canvas',
         '--no-first-run',
         '--no-zygote',
-        '--disable-gpu'
+        '--disable-gpu',
+        '--memory-pressure-off',
+        '--max_old_space_size=4096',
+        '--disable-background-timer-throttling',
+        '--disable-backgrounding-occluded-windows',
+        '--disable-renderer-backgrounding'
       ],
       ignoreHTTPSErrors: true,
     });
 
     const page = await browser.newPage();
+    
+    // Configurações da página otimizadas
+    await page.setViewport({ width: 1366, height: 768 });
+    await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36');
     
     // ... resto do código continua igual ...
     console.log('📄 Acessando formulário...');
