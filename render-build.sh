@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
-echo "🛠️ Instalando Chrome para Puppeteer..."
-npx --yes puppeteer browsers install chrome
+echo "🛠️ Instalando Chromium com script direto..."
+node node_modules/puppeteer/install.mjs
