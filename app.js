@@ -8,6 +8,25 @@ const http = require('http');
 
 app.use(express.json());
 
+// ✅ ADICIONE ESTAS 3 ROTAS AQUI:
+app.get('/', (req, res) => {
+  res.send('OK');
+});
+
+app.get('/health', (req, res) => {
+  res.status(200).json({ 
+    status: 'healthy', 
+    timestamp: new Date().toISOString(),
+    service: 'MBM Bot'
+  });
+});
+
+app.get('/status', (req, res) => {
+  res.send('API MBM-Bot está funcionando!');
+});
+
+
+
 // Função para aguardar/delay
 const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
