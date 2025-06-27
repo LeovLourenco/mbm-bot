@@ -971,7 +971,7 @@ async function enviarParaMBM(dados) {
   try {
     console.log('🚀 Iniciando processo de cadastro via Pipefy...');
     
-    const browser = await puppeteer.launch({
+     browser = await puppeteer.launch({
       headless: true,
       args: ['--no-sandbox', '--disable-setuid-sandbox'],
       ignoreHTTPSErrors: true,
