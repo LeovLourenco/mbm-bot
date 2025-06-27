@@ -973,7 +973,16 @@ async function enviarParaMBM(dados) {
     
      browser = await puppeteer.launch({
       headless: true,
-      args: ['--no-sandbox', '--disable-setuid-sandbox'],
+      executablePath: '/opt/render/.cache/puppeteer/chrome/linux-137.0.7151.119/chrome-linux64/chrome',
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage',
+        '--disable-accelerated-2d-canvas',
+        '--no-first-run',
+        '--no-zygote',
+        '--disable-gpu'
+      ],
       ignoreHTTPSErrors: true,
     });
 
