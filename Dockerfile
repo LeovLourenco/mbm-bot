@@ -28,9 +28,11 @@ RUN wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add
 # Configurar diretório de trabalho
 WORKDIR /app
 
-# Copiar package.json e instalar dependências
-COPY package*.json ./
-RUN npm ci --only=production
+# Copiar apenas package.json primeiro
+COPY package.json ./
+
+# Instalar dependências (sem package-lock.json)
+RUN npm install --omit=dev
 
 # Copiar código da aplicação
 COPY . .
