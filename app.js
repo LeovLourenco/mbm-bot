@@ -1,4 +1,3 @@
-const chromium = require('chrome-aws-lambda');
 const express = require('express');
 const app = express();
 const puppeteer = require('puppeteer');
@@ -177,13 +176,12 @@ app.post('/enviar', async (req, res) => {
   try {
     console.log('🚀 Iniciando processo de cadastro...');
     
-    const browser = await chromium.puppeteer.launch({
-      args: chromium.args,
-      defaultViewport: chromium.defaultViewport,
-      executablePath: await chromium.executablePath,
-      headless: chromium.headless,
+    const browser = await puppeteer.launch({
+      headless: true,
+      args: ['--no-sandbox', '--disable-setuid-sandbox'],
       ignoreHTTPSErrors: true,
     });
+
 
     const page = await browser.newPage();
     
@@ -973,12 +971,9 @@ async function enviarParaMBM(dados) {
   try {
     console.log('🚀 Iniciando processo de cadastro via Pipefy...');
     
-    // ✅ ADICIONE ESTA INICIALIZAÇÃO:
-    browser = await chromium.puppeteer.launch({
-      args: chromium.args,
-      defaultViewport: chromium.defaultViewport,
-      executablePath: await chromium.executablePath,
-      headless: chromium.headless,
+    const browser = await puppeteer.launch({
+      headless: true,
+      args: ['--no-sandbox', '--disable-setuid-sandbox'],
       ignoreHTTPSErrors: true,
     });
 
