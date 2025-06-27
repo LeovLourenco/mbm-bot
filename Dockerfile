@@ -28,11 +28,13 @@ RUN wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add
 # Configurar diretório de trabalho
 WORKDIR /app
 
-# Copiar apenas package.json primeiro
-COPY package.json ./
+# Configurar Puppeteer para não baixar Chrome (já temos instalado)
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
+ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome-stable
 
-# Instalar dependências (sem package-lock.json)
-RUN npm install --omit=dev
+# Copiar package.json e instalar dependências
+COPY package.json ./
+RUN npm install --omit=dev --verbose
 
 # Copiar código da aplicação
 COPY . .
