@@ -1310,6 +1310,9 @@ async function enviarParaMBM(dados) {
   }
 }
 const PORT = process.env.PORT || 3000;
+console.log('🔍 DEBUG - process.env.PORT:', process.env.PORT);
+console.log('🔍 DEBUG - PORT final:', PORT);
+console.log('🔍 DEBUG - typeof PORT:', typeof PORT);
 app.listen(PORT, () => {
   console.log(`🚀 Servidor rodando na porta ${PORT}`);
   console.log(`📋 Endpoints disponíveis:`);
