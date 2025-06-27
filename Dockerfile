@@ -1,49 +1,30 @@
+# Usa uma imagem Node.js leve para reduzir o tamanho final da imagem.
+# 'alpine' é ainda menor que 'slim', mas 'slim' já é uma boa escolha.
 FROM node:18-slim
 
-# Instalar dependências do sistema para Chrome
-RUN apt-get update && apt-get install -y \
-    wget \
-    gnupg \
-    ca-certificates \
-    fonts-liberation \
-    libappindicator3-1 \
-    libasound2 \
-    libatk-bridge2.0-0 \
-    libdrm2 \
-    libgtk-3-0 \
-    libnspr4 \
-    libnss3 \
-    libxss1 \
-    libxtst6 \
-    xdg-utils \
-    && rm -rf /var/lib/apt/lists/*
-
-# Instalar Google Chrome
-RUN wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add - \
-    && echo "deb https://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list \
-    && apt-get update \
-    && apt-get install -y google-chrome-stable \
-    && rm -rf /var/lib/apt/lists/*
-
-# Configurar diretório de trabalho
+# Define o diretório de trabalho dentro do contêiner.
 WORKDIR /app
 
-# Configurar Puppeteer para não baixar Chrome (já temos instalado)
-ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
-ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome-stable
-
-# Copiar package.json e instalar dependências
+# Copia o package.json e o package-lock.json (se existir) para instalar as dependências primeiro.
+# Isso aproveita o cache do Docker e acelera builds futuros se as dependências não mudarem.
 COPY package.json ./
-RUN npm install --omit=dev --verbose
 
-# Copiar código da aplicação
+# Instala as dependências do projeto.
+# '--omit=dev' garante que apenas as dependências de produção sejam instaladas, reduzindo o tamanho.
+# '--verbose' é útil para debug, mas pode ser removido em produção.
+RUN npm install --omit=dev
+
+# Copia o restante do código da sua aplicação para o diretório de trabalho.
 COPY . .
 
-# Criar pasta para documentos
+# Cria a pasta 'documentos'. (Se essa pasta for para upload de arquivos,
+# considere que contêineres são efêmeros. Você pode precisar de armazenamento persistente para isso.)
 RUN mkdir -p documentos
 
-# Expor porta
+# Expõe a porta em que a aplicação Node.js vai escutar.
+# Isso informa ao Docker que esta porta é relevante, mas não a publica automaticamente.
 EXPOSE 3000
 
-# Comando para iniciar
+# Define o comando que será executado quando o contêiner iniciar.
+# Usa o script 'start' definido no seu package.json.
 CMD ["npm", "start"]
