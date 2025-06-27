@@ -964,16 +964,71 @@ async function processarArquivosPipefy(pipefyData) {
 }
 
 
-// Função real para envio à MBM (substitui o mock)
+// Função real para envio à MBM (com descoberta automática do Chrome)
 async function enviarParaMBM(dados) {
   let browser;
 
   try {
     console.log('🚀 Iniciando processo de cadastro via Pipefy...');
     
-     browser = await puppeteer.launch({
+    // ✅ CORREÇÃO: Descobrir automaticamente o caminho do Chrome
+    const fs = require('fs');
+    const path = require('path');
+    
+    // Função para encontrar o executável do Chrome
+    function findChrome() {
+      const possiblePaths = [
+        '/opt/render/.cache/puppeteer/chrome/linux-137.0.7151.119/chrome-linux64/chrome',
+        '/opt/render/.cache/puppeteer/chrome/linux-137.0.7151.119/chrome',
+        '/opt/render/.cache/puppeteer/chrome/linux-137.0.7151.119/chrome-linux/chrome',
+        '/opt/render/.cache/puppeteer/chrome-headless-shell/linux-137.0.7151.119/chrome-headless-shell',
+        process.env.PUPPETEER_EXECUTABLE_PATH
+      ].filter(Boolean);
+      
+      console.log('🔍 Procurando Chrome nos caminhos:', possiblePaths);
+      
+      for (const chromePath of possiblePaths) {
+        if (fs.existsSync(chromePath)) {
+          console.log(`✅ Chrome encontrado em: ${chromePath}`);
+          return chromePath;
+        } else {
+          console.log(`❌ Chrome não encontrado em: ${chromePath}`);
+        }
+      }
+      
+      // Se não encontrar, listar o que há na pasta
+      const baseDir = '/opt/render/.cache/puppeteer';
+      if (fs.existsSync(baseDir)) {
+        console.log('📁 Conteúdo da pasta puppeteer:');
+        const items = fs.readdirSync(baseDir, { withFileTypes: true });
+        items.forEach(item => {
+          console.log(`  ${item.isDirectory() ? '📁' : '📄'} ${item.name}`);
+          if (item.isDirectory()) {
+            const subDir = path.join(baseDir, item.name);
+            try {
+              const subItems = fs.readdirSync(subDir);
+              subItems.forEach(subItem => {
+                console.log(`    📄 ${subItem}`);
+              });
+            } catch (e) {
+              console.log(`    ❌ Erro ao ler: ${e.message}`);
+            }
+          }
+        });
+      }
+      
+      return null;
+    }
+    
+    const chromePath = findChrome();
+    
+    if (!chromePath) {
+      throw new Error('Chrome não encontrado em nenhum dos caminhos possíveis');
+    }
+    
+    browser = await puppeteer.launch({
       headless: true,
-      executablePath: '/opt/render/.cache/puppeteer/chrome/linux-137.0.7151.119/chrome-linux64/chrome',
+      executablePath: chromePath,
       args: [
         '--no-sandbox',
         '--disable-setuid-sandbox',
@@ -986,7 +1041,9 @@ async function enviarParaMBM(dados) {
       ignoreHTTPSErrors: true,
     });
 
-    const page = await browser.newPage(); // ✅ Agora vai funcionar!
+    const page = await browser.newPage();
+    
+    // ... resto do código continua igual ...
     console.log('📄 Acessando formulário...');
     await page.goto('https://mbmseguros.com.br/novo-corretor/', {
       waitUntil: 'networkidle2',
