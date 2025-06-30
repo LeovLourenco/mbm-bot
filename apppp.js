@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const puppeteer = require('puppeteer-core');
+const puppeteer = require('puppeteer');
 const path = require('path');
 const fs = require('fs');
 const https = require('https');
@@ -202,23 +202,10 @@ app.post('/enviar', async (req, res) => {
     // ✅ Configuração otimizada para Railway
     const browser = await puppeteer.launch({
       headless: true,
-      executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || '/usr/bin/google-chrome-stable',
-      args: [
-        '--no-sandbox',
-        '--disable-setuid-sandbox',
-        '--disable-dev-shm-usage',
-        '--disable-accelerated-2d-canvas',
-        '--no-first-run',
-        '--no-zygote',
-        '--disable-gpu',
-        '--memory-pressure-off',
-        '--max_old_space_size=4096',
-        '--disable-background-timer-throttling',
-        '--disable-backgrounding-occluded-windows',
-        '--disable-renderer-backgrounding'
-      ],
+      args: ['--no-sandbox', '--disable-setuid-sandbox'],
       ignoreHTTPSErrors: true,
     });
+
 
 
     const page = await browser.newPage();
