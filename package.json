@@ -4,10 +4,9 @@
   "description": "Bot para cadastro de corretores MBM via Pipefy",
   "main": "apppp.js",
   
-
 "scripts": {
   "start": "node apppp.js",
-  "postinstall": "npx @puppeteer/browsers install chrome",
+  "postinstall": "npx @puppeteer/browsers install chromium",
   "dev": "nodemon apppp.js"
 },
   "engines": {
