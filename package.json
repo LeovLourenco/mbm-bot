@@ -6,7 +6,7 @@
   
 "scripts": {
   "start": "node apppp.js",
-  "postinstall": "npx @puppeteer/browsers install chromium",
+  "postinstall": "npx @puppeteer/browsers install chromium@1280820", 
   "dev": "nodemon apppp.js"
 },
   "engines": {
@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "express": "^4.18.2",
-    "puppeteer": "^19.11.1"
+    "puppeteer": "^22.10.0"
   },
   "devDependencies": {
     "nodemon": "^3.0.2"
