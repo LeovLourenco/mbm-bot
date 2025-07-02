@@ -1,0 +1,57 @@
+commit d1f489d6a6ccfd6877c8818530c3491ffc706ade "trocando de chromium para chrome@127". Erro desta build:
+==> It looks like we don't have access to your repo, but we'll try to clone it anyway.
+==> Cloning from https://github.com/LeovLourenco/mbm-bot
+==> Checking out commit d1f489d6a6ccfd6877c8818530c3491ffc706ade in branch main
+==> Downloading cache...
+==> Transferred 470MB in 8s. Extraction took 8s.
+==> Requesting Node.js version 18.x
+==> Using Node.js version 18.20.8 via /opt/render/project/src/package.json
+==> Node.js version 18.20.8 has reached end-of-life.
+==> Upgrade to a maintained version to receive important security updates.
+==> Information on maintained Node.js versions: https://nodejs.org/en/about/previous-releases
+==> Docs on specifying a Node.js version: https://render.com/docs/node-version
+==> Using Bun version 1.1.0 (default)
+==> Docs on specifying a Bun version: https://render.com/docs/bun-version
+==> Running build command './render-build.sh'...
+➡️  Instalando dependências do projeto com npm...
+> mbm-bot@1.0.0 postinstall
+> npx @puppeteer/browsers install chrome@127.0.6533.88
+chrome@127.0.6533.88 /opt/render/project/src/chrome/linux-127.0.6533.88/chrome-linux64/chrome
+removed 15 packages, changed 64 packages, and audited 216 packages in 9s
+28 packages are looking for funding
+  run `npm fund` for details
+found 0 vulnerabilities
+🚀 Executando o script de build do projeto (se houver um)...
+✅ Build concluído com sucesso!
+==> Uploading build...
+==> Uploaded in 7.7s. Compression took 1.5s
+==> Build successful 🎉
+==> Deploying...
+==> Running 'node apppp.js'
+🟢 Express carregado
+🟢 Puppeteer carregado
+🟢 Iniciando configuração das rotas...
+🔍 DEBUG - process.env.PORT: 10000
+🔍 DEBUG - PORT final: 10000
+🔍 DEBUG - typeof PORT: string
+🚀 Servidor rodando na porta 10000
+📋 Endpoints disponíveis:
+   POST /enviar - Enviar cadastro de corretor
+   GET /status - Status do servidor
+==> Your service is live 🎉
+==> 
+==> ///////////////////////////////////////////////////////////
+==> 
+==> Available at your primary URL https://inova-mbm.onrender.com
+==> 
+==> ///////////////////////////////////////////////////////////
+🚀 Iniciando processo de cadastro...
+❌ Erro no processo: Error: Could not find Chrome (ver. 127.0.6533.88). This can occur if either
+ 1. you did not perform an installation before running the script (e.g. `npx puppeteer browsers install chrome`) or
+ 2. your cache path is incorrectly configured (which is: /opt/render/project/.puppeteer_cache).
+For (2), check out our guide on configuring puppeteer at https://pptr.dev/guides/configuration.
+    at ChromeLauncher.resolveExecutablePath (/opt/render/project/src/node_modules/puppeteer-core/lib/cjs/puppeteer/node/ProductLauncher.js:291:27)
+    at ChromeLauncher.executablePath (/opt/render/project/src/node_modules/puppeteer-core/lib/cjs/puppeteer/node/ChromeLauncher.js:209:25)
+    at ChromeLauncher.computeLaunchArguments (/opt/render/project/src/node_modules/puppeteer-core/lib/cjs/puppeteer/node/ChromeLauncher.js:89:37)
+    at async ChromeLauncher.launch (/opt/render/project/src/node_modules/puppeteer-core/lib/cjs/puppeteer/node/ProductLauncher.js:70:28)
+    at async /opt/render/project/src/apppp.js:204:13

@@ -6,6 +6,76 @@ const fs = require('fs');
 const https = require('https');
 const http = require('http');
 
+function findChromeExecutable() {
+    const possiblePaths = [
+        '/opt/render/project/src/chrome/linux-127.0.6533.88/chrome-linux64/chrome',
+        '/opt/render/project/.cache/puppeteer/chrome/linux-127.0.6533.88/chrome-linux64/chrome',
+        '/opt/render/project/.puppeteer_cache/chrome/linux-127.0.6533.88/chrome-linux64/chrome',
+        process.env.PUPPETEER_EXECUTABLE_PATH
+    ].filter(Boolean);
+
+    for (const chromePath of possiblePaths) {
+        if (fs.existsSync(chromePath)) {
+            console.log(`✅ Chrome encontrado em: ${chromePath}`);
+            return chromePath;
+        } else {
+            console.log(`❌ Chrome não encontrado em: ${chromePath}`);
+        }
+    }
+
+    // Se não encontrar, liste o que existe no diretório
+    console.log('🔍 Listando conteúdo do diretório src/chrome:');
+    try {
+        const chromeDir = '/opt/render/project/src/chrome';
+        if (fs.existsSync(chromeDir)) {
+            const contents = fs.readdirSync(chromeDir, { recursive: true });
+            console.log(contents);
+        }
+    } catch (error) {
+        console.log('Erro ao listar diretório:', error.message);
+    }
+
+    return null;
+}
+
+// Configuração do Puppeteer
+function getPuppeteerConfig() {
+    const chromeExecutable = findChromeExecutable();
+    
+    const config = {
+        headless: true,
+        args: [
+            '--no-sandbox',
+            '--disable-setuid-sandbox',
+            '--disable-dev-shm-usage',
+            '--disable-gpu',
+            '--disable-web-security',
+            '--disable-features=VizDisplayCompositor',
+            '--single-process'
+        ]
+    };
+
+    if (chromeExecutable) {
+        config.executablePath = chromeExecutable;
+    }
+
+    return config;
+}
+
+// Função para lançar browser com debug
+async function launchBrowser() {
+    try {
+        const config = getPuppeteerConfig();
+        console.log('🚀 Configuração do Puppeteer:', config);
+        
+        const browser = await puppeteer.launch(config);
+        console.log('✅ Browser iniciado com sucesso!');
+        return browser;
+    } catch (error) {
+        console.error('❌ Erro ao iniciar browser:', error);
+        throw error;
+    }
+}
 console.log('🟢 Express carregado');
 console.log('🟢 Puppeteer carregado');
 console.log('🟢 Iniciando configuração das rotas...');
@@ -201,19 +271,7 @@ app.post('/enviar', async (req, res) => {
     
     // CORRIGIDO
 
-  browser = await puppeteer.launch({
-    headless: "new", // Aproveite para usar o modo novo e remover o warning
-    args: [
-      '--no-sandbox',
-      '--disable-setuid-sandbox',
-      '--disable-dev-shm-usage',
-      '--disable-accelerated-2d-canvas',
-      '--no-first-run',
-      '--no-zygote',
-      '--disable-gpu'
-    ],
-    ignoreHTTPSErrors: true,
-  });
+  browser = await launchBrowser();
 
 
 
@@ -1007,17 +1065,7 @@ async function enviarParaMBM(dados) {
     
     // CORRIGIDO
 
-  browser = await puppeteer.launch({
-    executablePath: '/opt/render/project/src/chrome/linux-127.0.6533.88/chrome-linux64/chrome',
-    headless: true,
-    args: [
-        '--no-sandbox',
-        '--disable-setuid-sandbox',
-        '--disable-dev-shm-usage',
-        '--disable-gpu',
-        '--single-process'
-    ]
-  });
+  browser = await launchBrowser();
 
     const page = await browser.newPage();
     
