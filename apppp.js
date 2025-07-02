@@ -199,12 +199,21 @@ app.post('/enviar', async (req, res) => {
   try {
     console.log('🚀 Iniciando processo de cadastro...');
     
-    // ✅ Configuração otimizada para Railway
-    const browser = await puppeteer.launch({
-      headless: true,
-      args: ['--no-sandbox', '--disable-setuid-sandbox'],
-      ignoreHTTPSErrors: true,
-    });
+    // CORRIGIDO
+
+  browser = await puppeteer.launch({
+    headless: "new", // Aproveite para usar o modo novo e remover o warning
+    args: [
+      '--no-sandbox',
+      '--disable-setuid-sandbox',
+      '--disable-dev-shm-usage',
+      '--disable-accelerated-2d-canvas',
+      '--no-first-run',
+      '--no-zygote',
+      '--disable-gpu'
+    ],
+    ignoreHTTPSErrors: true,
+  });
 
 
 
@@ -996,26 +1005,21 @@ async function enviarParaMBM(dados) {
   try {
     console.log('🚀 Iniciando processo de cadastro via Pipefy...');
     
-    // ✅ Configuração otimizada para Railway
-    browser = await puppeteer.launch({
-      headless: true,
-      executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || '/usr/bin/google-chrome-stable',
-      args: [
-        '--no-sandbox',
-        '--disable-setuid-sandbox',
-        '--disable-dev-shm-usage',
-        '--disable-accelerated-2d-canvas',
-        '--no-first-run',
-        '--no-zygote',
-        '--disable-gpu',
-        '--memory-pressure-off',
-        '--max_old_space_size=4096',
-        '--disable-background-timer-throttling',
-        '--disable-backgrounding-occluded-windows',
-        '--disable-renderer-backgrounding'
-      ],
-      ignoreHTTPSErrors: true,
-    });
+    // CORRIGIDO
+
+  browser = await puppeteer.launch({
+    headless: "new", // Aproveite para usar o modo novo e remover o warning
+    args: [
+      '--no-sandbox',
+      '--disable-setuid-sandbox',
+      '--disable-dev-shm-usage',
+      '--disable-accelerated-2d-canvas',
+      '--no-first-run',
+      '--no-zygote',
+      '--disable-gpu'
+    ],
+    ignoreHTTPSErrors: true,
+  });
 
     const page = await browser.newPage();
     
