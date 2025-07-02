@@ -1008,17 +1008,15 @@ async function enviarParaMBM(dados) {
     // CORRIGIDO
 
   browser = await puppeteer.launch({
-    headless: "new", // Aproveite para usar o modo novo e remover o warning
+    executablePath: '/opt/render/project/src/chrome/linux-127.0.6533.88/chrome-linux64/chrome',
+    headless: true,
     args: [
-      '--no-sandbox',
-      '--disable-setuid-sandbox',
-      '--disable-dev-shm-usage',
-      '--disable-accelerated-2d-canvas',
-      '--no-first-run',
-      '--no-zygote',
-      '--disable-gpu'
-    ],
-    ignoreHTTPSErrors: true,
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage',
+        '--disable-gpu',
+        '--single-process'
+    ]
   });
 
     const page = await browser.newPage();
