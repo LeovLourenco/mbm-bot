@@ -273,8 +273,6 @@ app.post('/enviar', async (req, res) => {
 
   browser = await launchBrowser();
 
-
-
     const page = await browser.newPage();
     
     // Configurações da página
@@ -290,13 +288,11 @@ app.post('/enviar', async (req, res) => {
 
   // Screenshot 1: Logo após carregar a página
   console.log('📸 Capturando screenshot 1 - Página inicial');
-  await page.screenshot({ 
-    path: `debug-01-pagina-inicial-${Date.now()}.png`, 
-    fullPage: true 
-  });
+  const screenshot1 = await page.screenshot({ encoding: 'base64', fullPage: true });
+  console.log('📸 Screenshot 1 (Base64):', screenshot1);
 
   // Debug: Verificar URL atual
-  console.log('🔗 URL atual:', urlAtual);
+  console.log('🔗 URL atual:', page.url());
 
   // Debug: Verificar título da página
   const titulo = await page.title();
@@ -308,10 +304,8 @@ app.post('/enviar', async (req, res) => {
 
   // Screenshot 2: Após aguardar JavaScript
   console.log('📸 Capturando screenshot 2 - Após aguardar JS');
-  await page.screenshot({ 
-    path: `debug-02-apos-js-${Date.now()}.png`, 
-    fullPage: true 
-  });
+  const screenshot2 = await page.screenshot({ encoding: 'base64', fullPage: true });
+  console.log('📸 Screenshot 2 (Base64):', screenshot2);
 
   // Debug: Listar todos os inputs na página
   console.log('🔍 Investigando campos disponíveis...');
