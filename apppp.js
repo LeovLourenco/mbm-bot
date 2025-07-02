@@ -286,6 +286,85 @@ app.post('/enviar', async (req, res) => {
       waitUntil: 'networkidle2',
       timeout: 60000
     });
+    // Adicione estas linhas logo após acessar o formulário no seu código:
+
+  // Screenshot 1: Logo após carregar a página
+  console.log('📸 Capturando screenshot 1 - Página inicial');
+  await page.screenshot({ 
+    path: `debug-01-pagina-inicial-${Date.now()}.png`, 
+    fullPage: true 
+  });
+
+  // Debug: Verificar URL atual
+  console.log('🔗 URL atual:', urlAtual);
+
+  // Debug: Verificar título da página
+  const titulo = await page.title();
+  console.log('📝 Título da página:', titulo);
+
+  // Debug: Aguardar um pouco mais para JavaScript carregar
+  console.log('⏳ Aguardando JavaScript carregar...');
+  await delay(5000);
+
+  // Screenshot 2: Após aguardar JavaScript
+  console.log('📸 Capturando screenshot 2 - Após aguardar JS');
+  await page.screenshot({ 
+    path: `debug-02-apos-js-${Date.now()}.png`, 
+    fullPage: true 
+  });
+
+  // Debug: Listar todos os inputs na página
+  console.log('🔍 Investigando campos disponíveis...');
+  const camposDisponiveis = await page.evaluate(() => {
+    const inputs = Array.from(document.querySelectorAll('input, textarea, select, button'));
+    return inputs.map(input => ({
+      tag: input.tagName.toLowerCase(),
+      type: input.type || 'N/A',
+      name: input.name || 'N/A',
+      id: input.id || 'N/A',
+      class: input.className || 'N/A',
+      placeholder: input.placeholder || 'N/A',
+      value: input.value || 'N/A'
+    }));
+  });
+
+  console.log('📋 Campos encontrados na página:', JSON.stringify(camposDisponiveis, null, 2));
+
+  // Debug: Verificar se existem formulários na página
+  const formularios = await page.evaluate(() => {
+    const forms = Array.from(document.querySelectorAll('form'));
+    return forms.map(form => ({
+      id: form.id || 'N/A',
+      class: form.className || 'N/A',
+      action: form.action || 'N/A',
+      method: form.method || 'N/A'
+    }));
+  });
+
+  console.log('📄 Formulários encontrados:', JSON.stringify(formularios, null, 2));
+
+  // Debug: Verificar se há erros JavaScript na página
+  console.log('🚨 Verificando erros JavaScript...');
+  const errosJS = await page.evaluate(() => {
+    return window.errors || [];
+  });
+
+  console.log('🐛 Erros JS encontrados:', errosJS);
+
+  // Debug: Verificar se Contact Form 7 carregou
+  const cf7Status = await page.evaluate(() => {
+    return {
+      wpcf7Loaded: typeof window.wpcf7 !== 'undefined',
+      formExists: !!document.querySelector('.wpcf7-form'),
+      cf7Scripts: Array.from(document.querySelectorAll('script')).some(script => 
+        script.src && script.src.includes('contact-form-7')
+      )
+    };
+  });
+
+  console.log('📝 Status Contact Form 7:', JSON.stringify(cf7Status, null, 2));
+
+  // ========== CONTINUE COM SEU CÓDIGO APÓS ESTA PARTE ==========
 
     // Aceita cookies para limpar a tela - CORRIGIDO
     console.log('🍪 Verificando e aceitando cookies...');
