@@ -43,7 +43,7 @@ function getPuppeteerConfig() {
     const chromeExecutable = findChromeExecutable();
     
     const config = {
-        headless: false,
+        headless: 'new',
         args: [
             '--proxy-server=http://18.230.65.126:3128',
             '--no-sandbox',
