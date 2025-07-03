@@ -45,6 +45,7 @@ function getPuppeteerConfig() {
     const config = {
         headless: true,
         args: [
+            '--proxy-server=http://18.230.65.126:3128',
             '--no-sandbox',
             '--disable-setuid-sandbox',
             '--disable-dev-shm-usage',
