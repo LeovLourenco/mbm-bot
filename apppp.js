@@ -43,14 +43,14 @@ function getPuppeteerConfig() {
     const chromeExecutable = findChromeExecutable();
     
     const config = {
-        headless: true,
+        headless: false,
         args: [
             '--proxy-server=http://18.230.65.126:3128',
             '--no-sandbox',
             '--disable-setuid-sandbox',
             '--disable-dev-shm-usage',
             '--disable-gpu',
-            '--disable-web-security',
+//            '--disable-web-security',
             '--disable-features=VizDisplayCompositor',
             '--single-process'
         ]
@@ -329,12 +329,7 @@ app.post('/enviar', async (req, res) => {
     waitUntil: 'networkidle2',
     timeout: 60000
   });
-    console.log('📄 Acessando formulário...');
-    await page.goto('https://mbmseguros.com.br/novo-corretor/', {
-      waitUntil: 'networkidle2',
-      timeout: 60000
-    });
-    // Adicione estas linhas logo após acessar o formulário no seu código:
+  
 
   // Screenshot 1: Logo após carregar a página
   console.log('📸 Capturando screenshot 1 - Página inicial');
